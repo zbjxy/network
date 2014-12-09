@@ -9,6 +9,7 @@ MAX_EXTOBJPERTIME = 3
 MAX_EXTOBJBEGIN = 10
 
 ! setting of the generator
+!trytrytrytry
 urlnez = /data/oldenburgGen
 !urlnez = E:\\Programme\\Java\\ShowMap\\OL-Map\\oldenburgGen
 !urlnez = Daten\\oldenburgGen
