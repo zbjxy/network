@@ -78,12 +78,13 @@ public ExternalObjectGenerator (Properties properties, Time time, DataSpace data
  */
 public ExternalObject computeExternalObject (int time) {
 	// to be changed ...
-	int objClass = classes.computeNewExternalObjectClass (time);
+	//int objClass = classes.computeNewExternalObjectClass (time);  // Liu: this is 2. 
+	int objClass = 2;
 	int dx = dataspace.getMaxX()-dataspace.getMinX();
 	int dy = dataspace.getMaxY()-dataspace.getMinY();
-	int x = Math.abs(random.nextInt())%(dx+1) + dataspace.getMinX();
-	int y = Math.abs(random.nextInt())%(dy+1) + dataspace.getMinY();
-	int extX = Math.abs(random.nextInt())%classes.getExtension(objClass,0)+1;
+	int x = Math.abs(random.nextInt())%(dx+1) + dataspace.getMinX(); // Liu: x< dx
+	int y = Math.abs(random.nextInt())%(dy+1) + dataspace.getMinY(); // Liu: y<dy
+	int extX = Math.abs(random.nextInt())%classes.getExtension(objClass,0)+1; 
 	int extY = Math.abs(random.nextInt())%classes.getExtension(objClass,1)+1;
 	return new ExternalObject (currId++,time,classes.getLifetime(objClass),objClass,x,y,extX,extY);
 }
