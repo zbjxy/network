@@ -239,7 +239,7 @@ protected void addComponentsToApplet () {
 	add(getClickInfoLabel(), getClickInfoLabel().getName());
 	add(getShiftClickInfoLabel(), getShiftClickInfoLabel().getName());
 	add(getPressInfoLabel(), getPressInfoLabel().getName());
-	add(getCopyrightLabel(), getCopyrightLabel().getName());
+	//add(getCopyrightLabel(), getCopyrightLabel().getName());
 	// Checkboxes
 	if (unicodeSupported)
 		add(getUnicodeCheckbox(), getUnicodeCheckbox().getName());
