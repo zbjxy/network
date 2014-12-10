@@ -488,6 +488,16 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		// traverse the time
 		while (!time.isMaximumTimeExceeded()) {
 			// move and report all external objects, remove the desd objects
+			 /*
+			  * Here is when the change happens.  
+			  * For every time, first determine if the time is max time, 
+			  * Then move and report all external objects. If the objects exists. and if the objects has not reach destination. 
+			  * 
+			  * 
+			  * 
+			  * 
+			  * 
+			  */
 			if (extObjectsExist)
 				extObjects.moveAndResizeAndRemoveObjects(actTime, extObjGen,
 						reporter);
@@ -550,6 +560,7 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 			// to the next time stamp
 			time.increaseCurrTime();
 			actTime = time.getCurrTime();
+			//why 25? Interesting. 
 			if (actTime % 25 == 0)
 				System.gc();
 			reportProgress(actTime);
@@ -563,6 +574,11 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		}
 		util.Timer.stop(1);
 		// report and remove all still existing objects
+		// important for output files. 
+		/*
+		 * Since they dont have a output file function, we will need to write our own. I am curious on why they dont have one. 
+		 * Let me take a look at other data generators. 
+		 */
 		showStatus("remove remaining objects and report statistics...");
 		movingObjects.removeObjects();
 		if (extObjectsExist)
