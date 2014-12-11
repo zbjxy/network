@@ -145,6 +145,9 @@ public static double computeDistance (double x1, double y1, double x2, double y2
 	return Math.sqrt(xDist*xDist + yDist*yDist);
 }
 
+
+
+//changing this one. Keep the orignal content, however add a length of width. 
 /**
  * Computes and reports next point on the route.
  * @return destination reached?

@@ -105,25 +105,25 @@ public void deselect () {
 	selectedObject = null;
 }
 /**
- * Zeichnet alle Drawable-Objekte im angegebenen Graphic Context, vorausgesetzt der aktuelle Maßstab
- * wird vom Drawable-Objekt überschritten und es liegt im übergebenen Rechteck.
+ * Zeichnet alle Drawable-Objekte im angegebenen Graphic Context, vorausgesetzt der aktuelle Maï¿½stab
+ * wird vom Drawable-Objekt ï¿½berschritten und es liegt im ï¿½bergebenen Rechteck.
  * Die Zeichenreihenfolge richtet sich nach den Layern.
  * @param g aktueller Graphic Context
  * @param r Clipping-Rechteck
- * @param scale aktueller Maßstab
+ * @param scale aktueller Maï¿½stab
  */
 public void drawAllObjects (Graphics g, Rectangle r, int scale) {
 	for (int l=0; l<numOfLayers; l++)
 		drawAllObjectsOfLayer (l, g,r,scale);
 }
 /**
- * Zeichnet alle Drawable-Objekte im angegebenen Graphic Context, vorausgesetzt der aktuelle Maßstab
- * wird vom Drawable-Objekt überschritten und es liegt im übergebenen Rechteck.
+ * Zeichnet alle Drawable-Objekte im angegebenen Graphic Context, vorausgesetzt der aktuelle Maï¿½stab
+ * wird vom Drawable-Objekt ï¿½berschritten und es liegt im ï¿½bergebenen Rechteck.
  * Es werden nur die Objekte des angegebenen Layers gezeichnet.
  * @param l Layer
  * @param g aktueller Graphic Context
  * @param r Clipping-Rechteck
- * @param scale aktueller Maßstab
+ * @param scale aktueller Maï¿½stab
  */
 public void drawAllObjectsOfLayer (int l, Graphics g, Rectangle r, int scale) {
 	if (l >= numOfLayers)
@@ -141,6 +141,8 @@ public void drawAllObjectsOfLayer (int l, Graphics g, Rectangle r, int scale) {
 public Enumeration elements () {
 	return hashtable.elements();
 }
+
+
 /**
  * Finds the nearest derawable to a given position.
  * @return the nearest drawable
@@ -151,6 +153,8 @@ public Drawable findNearestDrawable (int x, int y) {
 	System.err.println("DrawableObjects.findNearestDrawable not implemented without search tree");
 	return null;
 }
+
+
 /**
  * Returns the data space of all objects. Not implemented without search tree.
  * @return mbr of the data space
@@ -159,6 +163,9 @@ public Rectangle getDataspace() {
 	System.err.println("DrawableObjects.getDataspace not implemented without search tree");
 	return null;
 }
+
+
+
 /**
  * Returns the presentation mode.
  * @return presentation mode
@@ -166,6 +173,9 @@ public Rectangle getDataspace() {
 public int getMode () {
 	return mode;
 }
+
+
+
 /**
  * Returns the next drawable primitive.
  * @return the primitive (or null)
@@ -174,14 +184,14 @@ public int getMode () {
 public Drawable getNextDrawable (Drawable prevPrim) {
 	int l = 0;
 	Drawable next = null;
-	// ggf. nächstes im akt. Layer bestimmen
+	// ggf. nï¿½chstes im akt. Layer bestimmen
 	if (prevPrim != null) {
 		next = prevPrim.getNextOfLayer();
 		if (next != null)
 			return next;
 		l = prevPrim.getLayer()+1;
 	}
-	// ggf. nächstes in den folgenden Layern bestimmen
+	// ggf. nï¿½chstes in den folgenden Layern bestimmen
 	while (l < numOfLayers) {
 		next = getNextDrawableOfLayer (null,l);
 		if (next != null)
@@ -190,6 +200,9 @@ public Drawable getNextDrawable (Drawable prevPrim) {
 	}
 	return null;
 }
+
+
+
 /**
  * Returns the next drawable primitive of the layer.
  * @return the primitive (or null)
@@ -213,14 +226,14 @@ public long getNextFreeId () {
 	return maxId+1;
 }
 /**
- * Gibt das nächste benannte, sichtbare und ggf. selektierbare Drawable-Objekt zurück,
- * welches sich an der angegebenen Position befindet und den Maßstab einhält.
- * Falls es kein solches Objekt gibt, wird null zurückgegeben.
+ * Gibt das nï¿½chste benannte, sichtbare und ggf. selektierbare Drawable-Objekt zurï¿½ck,
+ * welches sich an der angegebenen Position befindet und den Maï¿½stab einhï¿½lt.
+ * Falls es kein solches Objekt gibt, wird null zurï¿½ckgegeben.
  * @return gefundenes Drawable-Objekt
  * @param px x-Koordinate der gesuchten Position (in Basis-Koordinaten)
  * @param py y-Koordinate der gesuchten Position (in Basis-Koordinaten)
- * @param s Mindest-Maßstab
- * @param selectable muß das Objekt selektierbar sein?
+ * @param s Mindest-Maï¿½stab
+ * @param selectable muï¿½ das Objekt selektierbar sein?
  */
 public DrawableObject getNextVisibleIntersectingObject (int px, int py, int scale, boolean selectable) {
 	visibleDrawable = getNextDrawable(visibleDrawable);
@@ -255,8 +268,8 @@ public int getNumberOfObjects () {
 	return 0;
 }
 /**
- * Gibt das Drawable-Objekt zurück, welches die übergebende ID besitzt.
- * Falls es kein solches Objekt gibt, wird null zurückgegeben.
+ * Gibt das Drawable-Objekt zurï¿½ck, welches die ï¿½bergebende ID besitzt.
+ * Falls es kein solches Objekt gibt, wird null zurï¿½ckgegeben.
  * @return gefundenes Drawable-Objekt
  * @param id gesuchte ID
  */
@@ -272,11 +285,11 @@ public DrawableObject getSelectedObject ()  {
 	return selectedObject;
 }
 /**
- * Gibt das Drawable-Objekt zurück, welches die übergebende ID besitzt und sichtbar ist.
- * Falls es kein solches Objekt gibt, wird null zurückgegeben.
+ * Gibt das Drawable-Objekt zurï¿½ck, welches die ï¿½bergebende ID besitzt und sichtbar ist.
+ * Falls es kein solches Objekt gibt, wird null zurï¿½ckgegeben.
  * @return gefundenes Drawable-Objekt
  * @param id gesuchte ID
- * @param scale Maßstab
+ * @param scale Maï¿½stab
  */
 public DrawableObject getVisibleObjectById (long id, int scale) {
 	searchObject.setId(id);
@@ -374,8 +387,8 @@ public void readDrawableObject (EntryInput r, String objType) {
 			addDrawable(DrawableSymbol.bufferedText);
 			DrawableSymbol.bufferedText = null;
 		}
-		// ggf. zugehörigen Text suchen
-		// kann entfallen, wenn alle Länderdateien umgestellt
+		// ggf. zugehï¿½rigen Text suchen
+		// kann entfallen, wenn alle Lï¿½nderdateien umgestellt
 		else if (objType.startsWith("S")) {
 			DrawableObject baseObj = getObjectById(obj.getId());
 			if ((baseObj != null) && (baseObj.getNumberOfDrawables() > 1))
@@ -384,9 +397,9 @@ public void readDrawableObject (EntryInput r, String objType) {
 	}	
 }
 /**
- * Löscht das Drawable-Objekt aus dem Container und löst die Beziehung
+ * Lï¿½scht das Drawable-Objekt aus dem Container und lï¿½st die Beziehung
  * zum Grafik-Primitiv auf.
- * @param obj zu löschendes Drawable-Objekt
+ * @param obj zu lï¿½schendes Drawable-Objekt
  */
 public void remove (DrawableObject obj) {
 	if (obj == null)
@@ -443,8 +456,8 @@ public void removeAllObjectsOfLayer (int l) {
 	visibleDrawable = null;
 }
 /**
- * Deselektiert das bislang selektierte Drawable-Objekt und selektiert das übergebene Objekt.
- * @param obj zu löschendes Drawable-Objekt
+ * Deselektiert das bislang selektierte Drawable-Objekt und selektiert das ï¿½bergebene Objekt.
+ * @param obj zu lï¿½schendes Drawable-Objekt
  */
 public void select (DrawableObject obj) {
 	if (obj == null)

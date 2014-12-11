@@ -132,6 +132,7 @@ public class ExternalObjectClasses {
 			color[5] = Color.green;
 		if (num > 6)
 			color[6] = Color.pink;
+		
 		for (int i = 7; i < num; i++)
 			color[i] = new Color(Math.abs(RandomGenerator.getForVisualization(
 					properties).nextInt()) % 16777216);

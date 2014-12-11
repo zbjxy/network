@@ -488,16 +488,12 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		// traverse the time
 		while (!time.isMaximumTimeExceeded()) {
 			// move and report all external objects, remove the desd objects
-			 /*
-			  * Here is when the change happens.  
-			  * For every time, first determine if the time is max time, 
-			  * Then move and report all external objects. If the objects exists. and if the objects has not reach destination. 
-			  * 
-			  * 
-			  * 
-			  * 
-			  * 
-			  */
+			/*
+			 * Here is when the change happens. For every time, first determine
+			 * if the time is max time, Then move and report all external
+			 * objects. If the objects exists. and if the objects has not reach
+			 * destination.
+			 */
 			if (extObjectsExist)
 				extObjects.moveAndResizeAndRemoveObjects(actTime, extObjGen,
 						reporter);
@@ -560,9 +556,9 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 			// to the next time stamp
 			time.increaseCurrTime();
 			actTime = time.getCurrTime();
-			//why 25? Interesting. 
+			// why 25? Interesting.
 			if (actTime % 25 == 0)
-				System.gc();
+				System.gc();//why garbage collection here. 
 			reportProgress(actTime);
 			// wait
 			if (waitingPeriod > 0)
@@ -574,10 +570,11 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		}
 		util.Timer.stop(1);
 		// report and remove all still existing objects
-		// important for output files. 
+		// important for output files.
 		/*
-		 * Since they dont have a output file function, we will need to write our own. I am curious on why they dont have one. 
-		 * Let me take a look at other data generators. 
+		 * Since they dont have a output file function, we will need to write
+		 * our own. I am curious on why they dont have one. Let me take a look
+		 * at other data generators.
 		 */
 		showStatus("remove remaining objects and report statistics...");
 		movingObjects.removeObjects();
@@ -1173,7 +1170,7 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 	 * Initializes the data generator. Initializes the class EdgeClasses.
 	 */
 	public void init() {
-		//System.out.println("in init function");
+		// System.out.println("in init function");
 		String p = getParameter("propertyfile");
 		if (p != null)
 			propFilename = p;

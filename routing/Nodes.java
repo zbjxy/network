@@ -73,21 +73,21 @@ public Nodes (int numOfClasses) {
 }
 /**
  * Konstruktor.
- * @param edges Container über Kanten
+ * @param edges Container ï¿½ber Kanten
  */
 public Nodes (Edges edges) {
 	this.numOfClasses = edges.getNumOfClasses()+1;
 	hashTable = new Hashtable (10000);
 }
 /**
- * Die Markierungen aller Knoten werden gelöscht.
+ * Die Markierungen aller Knoten werden gelï¿½scht.
  */
 public void clearAllMarks () {
 	maxMark++;
 	nullMark = maxMark;
 }
 /**
- * Gibt Enumeration über alle Knoten zurück.
+ * Gibt Enumeration ï¿½ber alle Knoten zurï¿½ck.
  * @return Enumeration der Knoten
  */
 public Enumeration elements () {
@@ -130,8 +130,8 @@ public Node findNearest (int x, int y) {
 	return nearestNode;
 }
 /**
- * Gibt den Knoten zurück, der die angegebene ID besitzt.
- * Gibt es keinen solchen Knoten, wird null zurückgegeben.
+ * Gibt den Knoten zurï¿½ck, der die angegebene ID besitzt.
+ * Gibt es keinen solchen Knoten, wird null zurï¿½ckgegeben.
  * @return ggf. gefundener Knoten
  * @param id ID des Knotens
  */
@@ -155,7 +155,7 @@ public int getNumOfClasses () {
 }
 /**
  * Initialisiert die Darstellung der Knoten.
- * @param color Farben für die Kantenklassen
+ * @param color Farben fï¿½r die Kantenklassen
  * @param highlightColor Hervorhebungsfarbe
  */
 public void initPresentation (Color color[], Color highlightColor) {
@@ -185,7 +185,7 @@ public Node newNode (long id, int x, int y, String name) {
 	return node;
 }
 /**
- * Gibt die Anzahl der gespeicherten Knoten zurück.
+ * Gibt die Anzahl der gespeicherten Knoten zurï¿½ck.
  * @return Anzahl
  */
 public int numOfNodes () {
@@ -193,7 +193,7 @@ public int numOfNodes () {
 }
 /**
  * Liest einen Knoten vom DataInput.
- * Schlägt das Einlesen fehl, wird null zurückgegeben.
+ * Schlï¿½gt das Einlesen fehl, wird null zurï¿½ckgegeben.
  * @return eingelesener Knoten
  * @param in Data-Input
  */
@@ -202,7 +202,9 @@ public Node read (DataInput in) {
 	try {
 		byte len = in.readByte();
 		if (len > 0) {
+			//Reads and returns one input byte
 			byte[] data = new byte[len];
+			// the length from in to be read is equal to length of data.
 			in.readFully (data);
 			long pID = in.readLong();
 			int x = in.readInt();
@@ -234,15 +236,15 @@ public boolean removeNode (Node node) {
 	return false;
 }
 /**
- * Setzt die Maßstabsgrenzen der Kantenklassen neu.
- * @param newMinScale Maßstabsgrenzen
+ * Setzt die Maï¿½stabsgrenzen der Kantenklassen neu.
+ * @param newMinScale Maï¿½stabsgrenzen
  */
 public void setMinScaleArray (int newMinScale[]) {
 	minScale = newMinScale;
 }
 /**
- * Setzt die Text-Maßstabsgrenzen der Kantenklassen neu.
- * @param newMinTextScale Text-Maßstabsgrenzen
+ * Setzt die Text-Maï¿½stabsgrenzen der Kantenklassen neu.
+ * @param newMinTextScale Text-Maï¿½stabsgrenzen
  */
 public void setMinTextScaleArray (int newMinTextScale[]) {
 	minTextScale = newMinTextScale;
