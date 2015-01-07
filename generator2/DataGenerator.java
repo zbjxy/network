@@ -673,6 +673,7 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		showStatus("ready...");
 
 		try {
+			System.out.println("running python file. ");
 			String cmd = "/Users/leoliu/workspace/network/data";
 			String py = "mergeOutput";
 			Runtime.getRuntime().exec("python " + cmd + py + ".py");
