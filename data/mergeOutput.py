@@ -1,6 +1,26 @@
 import random
 #kill the first line from output.txt
 #merge the 2 files together, taking the first output.txt's speed, and then assign a random width. 
+
+
+
+
+
+
+#input: previous width parameter. 
+#output: the next width parameter. 
+
+def nextWidth(prev,width):
+	#0/1
+	temp = round(random.random())
+	if temp==0:
+		temp=-1
+	if prev+temp>width:
+		temp = -1
+	elif prev+temp<-1*width:
+		temp = 1
+	return temp+prev
+
 #the first file format: 
 # point, na, na, na, time, currentx, currenty, speed, nextx, nexty
 # the second file format: 
@@ -18,6 +38,7 @@ f3.truncate()
 #burn the first line because we dont need it. 
 f1.readline()
 lineNum=0
+prev=0
 with open(fname2,'r') as f2:
 	for line2 in f2:
 		lineNum+=1
@@ -30,7 +51,8 @@ with open(fname2,'r') as f2:
 		except AssertionError:
 			print "assertionError at "+str(lineNum)
 			line1Temp = f1.readline().strip().split()
-		widthTemp = round(random.random()*2*widthRange-widthRange)
+		widthTemp = nextWidth(prev,widthRange)
+		prev = widthTemp
 		lineTemp.extend(line2Temp)
 		lineTemp.append(line1Temp[7])
 		lineTemp.append(str(widthTemp))
