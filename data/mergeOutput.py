@@ -1,3 +1,4 @@
+import random
 #kill the first line from output.txt
 #merge the 2 files together, taking the first output.txt's speed, and then assign a random width. 
 #the first file format: 
@@ -9,6 +10,7 @@
 fname1 = 'output.txt'
 fname2 = 'output2.txt'
 fname3 = 'finaloutput.txt'
+widthRange = 5#this means range from -5 to 5. 
 f1 = open(fname1,'r')
 #f2 = open(fname2,'r')
 f3 = open(fname3,'w')
@@ -28,10 +30,11 @@ with open(fname2,'r') as f2:
 		except AssertionError:
 			print "assertionError at "+str(lineNum)
 			line1Temp = f1.readline().strip().split()
+		widthTemp = round(random.random()*2*widthRange-widthRange)
 		lineTemp.extend(line2Temp)
 		lineTemp.append(line1Temp[7])
+		lineTemp.append(str(widthTemp))
 		f3.write(' '.join(lineTemp)+'\n')		
-
 f1.close()
 f2.close()
 f3.close()
