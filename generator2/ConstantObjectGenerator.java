@@ -10,7 +10,6 @@ import routing.*;
  *  version 1.01  14.02.2005  robust against non-connected networks
  * @author FH Oldenburg
  */
-
 public class ConstantObjectGenerator extends ObjectGenerator {
 
 	/**
