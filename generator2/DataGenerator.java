@@ -402,6 +402,18 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 	 * </ol>
 	 */
 	public synchronized void compute() {
+		 PrintWriter out;
+		try {
+			out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/leoliu/workspace/network/data/output2.txt")));
+		    out.print("");
+		    out.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
+		
 		getComputeButton().setEnabled(false);
 		showStatus("initialize generation...");
 		// access to the network
@@ -558,7 +570,7 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 			actTime = time.getCurrTime();
 			// why 25? Interesting.
 			if (actTime % 25 == 0)
-				System.gc();//why garbage collection here. 
+				System.gc();// why garbage collection here.
 			reportProgress(actTime);
 			// wait
 			if (waitingPeriod > 0)
@@ -659,6 +671,15 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		this.addTimeButton.setEnabled(true);
 		repaint();
 		showStatus("ready...");
+
+		try {
+			String cmd = "/Users/leoliu/workspace/network/data";
+			String py = "mergeOutput";
+			Runtime.getRuntime().exec("python " + cmd + py + ".py");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
