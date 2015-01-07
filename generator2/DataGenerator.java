@@ -144,6 +144,10 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 	/**
 	 * Add time button
 	 */
+	private Button lanecrossButton = null;
+	
+	private Button rangeButton = null;
+	
 	private Button addTimeButton = null;
 	/**
 	 * Scrollbar
@@ -258,6 +262,12 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		super.actionPerformed(e);
 		if (e.getSource() == getComputeButton())
 			compute();
+		//new code for lane cross query*********************
+		if (e.getSource()==getlanecrossButton())
+			;
+		if (e.getSource()==getrangeButton())
+			;
+		
 		if ((e.getSource() == getAddTimeButton()) && (time != null)) {
 			int newTime = actTime + 1;
 			if (newTime <= time.getMaxTime()) {
@@ -271,6 +281,8 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 			deleteButton.setEnabled(false);
 			getAddTimeButton().setEnabled(false);
 			getComputeButton().setEnabled(true);
+			getlanecrossButton().setEnabled(true);
+			getrangeButton().setEnabled(true);
 		}
 	}
 
@@ -287,6 +299,8 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		remove(getPressInfoLabel());
 		// add additional components
 		add(getComputeButton(), getComputeButton().getName());
+		add(getlanecrossButton(), getlanecrossButton().getName());
+		add(getrangeButton(), getrangeButton().getName());
 		add(getAddTimeButton(), getAddTimeButton().getName());
 		add(getTimeScrollbar(), getTimeScrollbar().getName());
 		add(getMaxTimeLabel(), getMaxTimeLabel().getName());
@@ -314,6 +328,8 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 	protected void addComponentsToListeners() {
 		super.addComponentsToListeners();
 		getComputeButton().addActionListener(this);
+		getlanecrossButton().addActionListener(this);
+		getrangeButton().addActionListener(this);
 		getAddTimeButton().addActionListener(this);
 		getTimeScrollbar().addAdjustmentListener(this);
 		getDeleteButton().addActionListener(this);
@@ -347,6 +363,8 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		super.changeComponentPositions();
 		getScaleLabel().setBounds(viewX, viewY + viewHeight + 4, 70, 23);
 		getComputeButton().setBounds(viewX, viewY + viewHeight + 48, 76, 29);
+		getlanecrossButton().setBounds(viewX, viewY + viewHeight + 24, 85, 29);
+		getrangeButton().setBounds(viewX+90, viewY + viewHeight + 24, 80, 29);
 		getAddTimeButton().setBounds(viewX + viewWidth - 76,
 				viewY + viewHeight + 48, 76, 29);
 		getTimeScrollbar().setBounds(viewX, viewY + viewHeight + 140,
@@ -850,6 +868,35 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 		;
 		return computeButton;
 	}
+	
+	/**********************
+	 * create new cross-road query
+	 * 
+	 * 
+	 * */
+	protected Button getlanecrossButton(){
+		if (lanecrossButton == null){
+			lanecrossButton = new Button();
+			lanecrossButton.setName("Cross Lane");
+			lanecrossButton.setFont(new Font("Dialog", 0, 12));
+			lanecrossButton.setLabel("Cross Lane");
+			lanecrossButton.setEnabled(false);
+		}
+		;
+		return lanecrossButton;
+	}
+	
+	protected Button getrangeButton(){
+		if (rangeButton == null){
+			rangeButton = new Button();
+			rangeButton.setName("Cross Lane");
+			rangeButton.setFont(new Font("Dialog", 0, 12));
+			rangeButton.setLabel("Cross Lane");
+			rangeButton.setEnabled(false);
+		}
+		;
+		return rangeButton;
+	}
 
 	/**
 	 * Creates / Returns the delete button.
@@ -1328,6 +1375,8 @@ public abstract class DataGenerator extends ShowNetworkMap implements
 			compute();
 		// Compute button
 		getComputeButton().setEnabled(true);
+		getlanecrossButton().setEnabled(true);
+		getrangeButton().setEnabled(true);
 	}
 
 	/**

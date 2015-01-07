@@ -15,7 +15,7 @@ urlnez = /data/oldenburgGen
 !waitingPeriod = 1
 !DSO
 VIZ
-outputFile = /Users/leoliu/workspace/network/data/output.txt
+outputFile = /Users/Bing/Documents/workspace/network/data/output.txt
 !seed = 123
 
 ! setting of the applet
