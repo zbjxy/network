@@ -20,17 +20,45 @@ def calPoint(x1,y1,x2,y2,xc,yc,width):
     #check for vertical lines first. 
     #if the lines are vertical, then we can do easy processing
     if y2==yc:
-        return xc,yc-width
+        if xc>x2:
+            return xc,yc-width
+        else:
+            return xc,yc+width
     elif x2 == xc:
-        return xc+width,yc
+        if yc>y2:
+            return xc+width,yc
+        else:
+            return xc-width,yc
 
     slopeL1 = (y2-yc)/(x2-xc)
-    if width>0:
-        y = yc - math.sqrt(width**2/(1+1/slopeL1**2))
-        x = xc - math.sqrt(width**2 - (y-yc)**2)
+    if y2<yc and x2>xc:
+        if width>0:
+            y = yc + math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc + math.sqrt(width**2 - (y-yc)**2)
+        else:
+            y = yc - math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc - math.sqrt(width**2 - (y-yc)**2)
+    elif y2>yc and x2>xc:
+        if width>0:
+            y = yc + math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc - math.sqrt(width**2 - (y-yc)**2)
+        else:
+            y = yc - math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc + math.sqrt(width**2 - (y-yc)**2)
+    elif y2<yc and x2<xc:
+        if width>0:
+            y = yc - math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc - math.sqrt(width**2 - (y-yc)**2)
+        else:
+            y = yc + math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc + math.sqrt(width**2 - (y-yc)**2)
     else:
-        y = yc + math.sqrt(width**2/(1+1/slopeL1**2))
-        x = xc + math.sqrt(width**2 - (y-yc)**2)
+        if width>0:
+            y = yc - math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc + math.sqrt(width**2 - (y-yc)**2)
+        else:
+            y = yc + math.sqrt(width**2/(1+1/slopeL1**2))
+            x = xc - math.sqrt(width**2 - (y-yc)**2)
     return x,y
 
 #input: previous width parameter. 
