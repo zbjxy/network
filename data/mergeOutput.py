@@ -19,9 +19,9 @@ def calPoint(x1,y1,x2,y2,xc,yc,width):
     #4. slope is negative, and the width is negative
     #check for vertical lines first. 
     #if the lines are vertical, then we can do easy processing
-    if y2==y1:
+    if y2==yc:
         return xc,yc-width
-    elif x2 == x1:
+    elif x2 == xc:
         return xc+width,yc
 
     slopeL1 = (y2-yc)/(x2-xc)
@@ -57,7 +57,31 @@ def correctLines(lineNum, line1, line2):
     except AssertionError:
         print "assertionError at "+str(lineNum)
         return False
-
+#check for the same speed. If yes, then return true. If not, then return false. 
+def sameSpeed(data1, data2):
+    if len(data1)<8 or len(data2)<8:
+        return False
+    if round(float(data1[7]))==round(float(data2[7])):
+        return True
+    return False
+#create sensor creates 1 sensor based on given x1y1x2y2 and speed. 
+def createSensor(x1,y1,t1,x2,y2,t2,speed):
+    x1 = float(x1)
+    y1 = float(y1)
+    x2 = float(x2)
+    y2 = float(y2)
+    t1 = float(t1)
+    t2 = float(t2)
+    speed = float(speed)
+    
+    probX = (x2+x1)/2
+    probY = (y2+y1)/2
+    tmin = t1+dis(x1,y1, probX, probY)/speed
+    tmax = t2-dis(probX, probY, x2, y2)/speed
+    t = 0
+    mu,sigma = (tmin+tmax)/2,((tmin+tmax)/2-tmin)/3
+    t = random.gauss(mu, sigma)
+    return [str(x1),str(y1),str(t1),str(x2),str(y2),str(t2),str(probX),str(probY),str(t)]
 #the first file format: 
 # point, na, na, na, time, currentx, currenty, speed, nextx, nexty
 # the second file format: 
@@ -67,7 +91,7 @@ def correctLines(lineNum, line1, line2):
 fname1 = 'output.txt'
 fname2 = 'output2.txt'
 fname3 = 'finaloutput.txt'
-fname4 = 'newCorrOutput.txt'
+fname4 = 'sensor.txt'
 widthRange = 5#this means range from -5 to 5. 
 f1 = open(fname1,'r')
 #f2 = open(fname2,'r')
@@ -82,6 +106,8 @@ lineNum=0
 prev=0
 x = 0.0
 y = 0.0
+prevLine=[]
+tempSensor=[]
 with open(fname2,'r') as f2:
     for line2 in f2:
         lineNum+=1
@@ -92,11 +118,18 @@ with open(fname2,'r') as f2:
             line1Temp = f1.readline().strip().split()
         widthTemp = nextWidth(prev,widthRange)
         prev = widthTemp
+        lineTemp.append(line1Temp[4])
         lineTemp.extend(line2Temp)
         lineTemp.append(line1Temp[7])
         lineTemp.append(str(widthTemp))
-        x,y = calPoint(float(lineTemp[0]),float(lineTemp[1]),float(lineTemp[2]),float(lineTemp[3]),float(lineTemp[4]),float(lineTemp[5]),float(widthTemp)) 
+        x,y = calPoint(float(lineTemp[1]),float(lineTemp[2]),float(lineTemp[3]),float(lineTemp[4]),float(lineTemp[5]),float(lineTemp[6]),float(widthTemp)) 
         lineTemp.extend([str(x),str(y)])
+
+        #add a check for the same speed. If it has the same speed, then record the two records in a new file. Otherwise, dont record those. 
+        if sameSpeed(prevLine,lineTemp):
+            tempSensor = createSensor(prevLine[5],prevLine[6],prevLine[0],lineTemp[5],lineTemp[6],lineTemp[0],lineTemp[7])
+            f4.write(' '.join(tempSensor)+'\n')
+        prevLine = lineTemp
         f3.write(' '.join(lineTemp)+'\n')		
 f1.close()
 f2.close()
