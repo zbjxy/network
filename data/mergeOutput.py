@@ -45,6 +45,9 @@ def nextWidth(prev,width):
     elif prev+temp<-1*width:
         temp = 1
     return temp+prev
+def nextWidthRand(prev,width):
+    temp = random.random()
+    return temp * 2 * width -width
 
 def correctLines(lineNum, line1, line2):
     try:
