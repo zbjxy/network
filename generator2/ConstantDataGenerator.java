@@ -12,7 +12,6 @@ import routing.Nodes;
  * @author FH Oldenburg
  */
 public class ConstantDataGenerator extends DefaultDataGenerator {
-
 	/**
 	 * Calls the constructor of ConstantObjectGenerator.
 	 * @return  the object generator
