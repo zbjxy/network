@@ -156,6 +156,7 @@ with open(fname2,'r') as f2:
         #add a check for the same speed. If it has the same speed, then record the two records in a new file. Otherwise, dont record those. 
         if sameSpeed(prevLine,lineTemp):
             tempSensor = createSensor(prevLine[5],prevLine[6],prevLine[0],lineTemp[5],lineTemp[6],lineTemp[0],lineTemp[7])
+            tempSensor.extend([prevLine[1],prevLine[2],lineTemp[1],lineTemp[2],lineTemp[7]])
             f4.write(' '.join(tempSensor)+'\n')
         prevLine = lineTemp
         f3.write(' '.join(lineTemp)+'\n')		
