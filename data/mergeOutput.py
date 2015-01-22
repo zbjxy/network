@@ -144,6 +144,10 @@ with open(fname2,'r') as f2:
         line2Temp = line2.strip().split()
         while(not correctLines(lineNum,line1Temp, line2Temp)):
             line1Temp = f1.readline().strip().split()
+            if not line1Temp:
+                print 'no mapping for file1 last line. '
+                import sys
+                sys.exit(1)
         widthTemp = nextWidth(prev,widthRange)
         prev = widthTemp
         lineTemp.append(line1Temp[4])
@@ -157,9 +161,12 @@ with open(fname2,'r') as f2:
         if sameSpeed(prevLine,lineTemp):
             tempSensor = createSensor(prevLine[5],prevLine[6],prevLine[0],lineTemp[5],lineTemp[6],lineTemp[0],lineTemp[7])
             tempSensor.extend([prevLine[1],prevLine[2],lineTemp[1],lineTemp[2],lineTemp[7]])
+            tempSensor.extend([prevLine[9],prevLine[10],lineTemp[9],lineTemp[10]])
             f4.write(' '.join(tempSensor)+'\n')
+        
         prevLine = lineTemp
-        f3.write(' '.join(lineTemp)+'\n')		
+        f3.write(' '.join(lineTemp)+'\n')	
+        
 f1.close()
 f2.close()
 f3.close()
