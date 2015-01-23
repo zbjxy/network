@@ -149,7 +149,7 @@ with open(fname2,'r') as f2:
                 print 'no mapping for file1 last line. '
                 import sys
                 sys.exit(1)
-        widthTemp = nextWidth(prev,widthRange)
+        widthTemp = nextWidthRand(prev,widthRange)
         prev = widthTemp
         lineTemp.append(line1Temp[4])
         lineTemp.extend(line2Temp)

@@ -11,8 +11,9 @@ public class Main {
 
 	/**
 	 * 
-	 * @param inStr -- the input String array containing float numbers. 
-	 * @return float[] that the input String array has. 
+	 * @param inStr
+	 *            -- the input String array containing float numbers.
+	 * @return float[] that the input String array has.
 	 */
 	public static float[] parseFloatArray(String[] inStr) {
 		float[] temp = new float[inStr.length];
@@ -49,9 +50,7 @@ public class Main {
 			 * do whatever you want here.
 			 */
 			System.out.println(temp[0]);
-
 		}
-
 		// Close the input stream
 		br.close();
 	}
@@ -66,7 +65,14 @@ public class Main {
 		// int grid_density=(x_max-x_min)/grid_n;
 
 		// we first will use grid 4000*4000, density 0.1
-		readFile("");
+	}
+
+	public static void doTest(float[] line) throws IOException {
+		/*
+		 * 
+		 *  
+		 * 
+		 */
 		double area = len_area_total(0, 0, 0, 100, 0, 10, 5, 12, 1, 400); // theoretical
 																			// value:
 																			// 900.311122,
@@ -95,6 +101,8 @@ public class Main {
 		 */
 		/***********/
 		/* start to calculate FB */
+		
+		
 		double grid_density = (eucDis(0, 0, 100, 0) / 100); // these two
 															// functions convert
 															// distance to grid
@@ -106,19 +114,18 @@ public class Main {
 				FBgrid[i][j] = 0.0;
 			}
 		}
-		double FBarea = FB_crossArea(0, -5, 0, 100, -0.2, 10, 7, 12, 50, 4.5,
-				grid_density, grid_size);
-		System.out.print("\nFB total area is: ");
-		System.out.print(FBarea);
-		double bead_area = len_area_total(0, -5, 0, 100, -0.2, 10, 7, 12,
-				grid_density, grid_size);
-		System.out.print("\nBead total area is: ");
-		System.out.print(bead_area);
-		double bead_above = FB_lane_cross_area(0, -5, 0, 100, -0.2, 10, 7, 12,
-				50, 4.5, grid_density, grid_size);
-		System.out.print("\nFB cross total area is: ");
-		System.out.print(bead_above);
-
+		/*
+		 * double FBarea = FB_crossArea(0, -5, 0, 100, -0.2, 10, 7, 12, 50, 4.5,
+		 * grid_density, grid_size); System.out.print("\nFB total area is: ");
+		 * System.out.print(FBarea); double bead_area = len_area_total(0, -5, 0,
+		 * 100, -0.2, 10, 7, 12, grid_density, grid_size);
+		 * System.out.print("\nBead total area is: ");
+		 * System.out.print(bead_area); double bead_above =
+		 * FB_lane_cross_area(0, -5, 0, 100, -0.2, 10, 7, 12, 50, 4.5,
+		 * grid_density, grid_size);
+		 * System.out.print("\nFB cross total area is: ");
+		 * System.out.print(bead_above);
+		 */
 		boolean FB_result = lane_crossing_FB(0, -5, 0, 100, -0.2, 10, 0, 10,
 				12, 50, 4.5, 0.1, grid_density, grid_size);
 		if (FB_result == true) {
@@ -128,6 +135,7 @@ public class Main {
 			System.out.print("\n FB judge ");
 			System.out.print("NO");
 		}
+
 		boolean bead_result = lane_crossing_bead(0, -5, 0, 100, -0.2, 10, 0,
 				10, 12, 0.1, grid_density, grid_size);
 		if (bead_result == true) {
@@ -139,6 +147,7 @@ public class Main {
 		}
 
 		/*********************************************/
+
 	}
 
 	// ///////////////////////////////////////////functions for lane-crossing
