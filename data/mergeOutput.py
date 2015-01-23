@@ -161,7 +161,7 @@ with open(fname2,'r') as f2:
         if sameSpeed(prevLine,lineTemp):
             tempSensor = createSensor(prevLine[5],prevLine[6],prevLine[0],lineTemp[5],lineTemp[6],lineTemp[0],lineTemp[7])
             tempSensor.extend([prevLine[1],prevLine[2],lineTemp[1],lineTemp[2],lineTemp[7]])
-            tempSensor.extend([prevLine[9],prevLine[10],lineTemp[9],lineTemp[10]])
+            tempSensor.extend([prevLine[9],prevLine[10],prevLine[8],lineTemp[9],lineTemp[10],lineTemp[8]])
             f4.write(' '.join(tempSensor)+'\n')
         
         prevLine = lineTemp

@@ -81,8 +81,8 @@ output.txt -- the original data file from network java program.
 output2.txt -- the modified data file from network java program. 
 
 Output: 
-finalOutput.txt -- format: time, x1,y1,x2,y2,xc,yc,speed,width,xCWithWidth,yCWithWidth
-sensor.txt -- format: x1,y1,t1,x2,y2,t2,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed
+finalOutput.txt -- format: time, edgex1,edgey1,edgex2,edgey2,px,py,speed,width,pxWidth,pyWithWidth
+sensor.txt -- format: p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
 
 
 
