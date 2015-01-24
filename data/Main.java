@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -47,12 +48,17 @@ public class Main {
 			// Print the content on the console
 			System.out.println(strLine.split(" "));
 			float[] temp = parseFloatArray(strLine.split(" "));
-			// TODO add function calls to algorithm. 
+			ArrayList<Integer> fbResults = new ArrayList<Integer>();
+			ArrayList<Integer> obResults = new ArrayList<Integer>();
+			
+			
+			// TODO add function calls to algorithm.
 			/*
-			 * count the number of yess for fb and b, and then result 
+			 * count the number of yess for fb and b, and then result
 			 */
-		//format: p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
-		//			0, 1,   2  3   4   5   6        7       8       9      10    11      12    13     14       15       16       17      18       19        
+			// format:
+			// p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
+			// 0, 1, 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
 			System.out.println(temp[0]);
 		}
 		// Close the input stream
@@ -68,7 +74,7 @@ public class Main {
 		// int y_max=10;
 		// int grid_n=40;
 		// int grid_density=(x_max-x_min)/grid_n;
-		// TODO read in different files. 
+		// TODO read in different files.
 		readFile("");
 		// we first will use grid 4000*4000, density 0.1
 	}
