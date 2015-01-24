@@ -19,6 +19,7 @@ public class Main {
 		float[] temp = new float[inStr.length];
 		for (int i = 0; i < inStr.length; i++) {
 			temp[i] = Float.parseFloat(inStr[i]);
+
 		}
 		return temp;
 	}
@@ -46,6 +47,7 @@ public class Main {
 			// Print the content on the console
 			System.out.println(strLine.split(" "));
 			float[] temp = parseFloatArray(strLine.split(" "));
+			// todo
 			/*
 			 * do whatever you want here.
 			 */
@@ -56,6 +58,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
+		System.out.println(args[0]);
 		// write your code here
 		// int x_min=0;
 		// int x_max=10;
@@ -101,8 +104,7 @@ public class Main {
 		 */
 		/***********/
 		/* start to calculate FB */
-		
-		
+
 		double grid_density = (eucDis(0, 0, 100, 0) / 100); // these two
 															// functions convert
 															// distance to grid
