@@ -34,7 +34,7 @@ public class Main {
 	 */
 	public static void readFile(String fileName) throws IOException {
 		if (fileName.equals("")) {
-			fileName = "sensor.txt";
+			fileName = "sensor50_rand.txt";
 		}
 		String path = "/Users/leoliu/workspace/network/data/";
 		FileInputStream fstream = new FileInputStream(path + fileName);
@@ -47,10 +47,12 @@ public class Main {
 			// Print the content on the console
 			System.out.println(strLine.split(" "));
 			float[] temp = parseFloatArray(strLine.split(" "));
-			// todo
+			// TODO add function calls to algorithm. 
 			/*
-			 * do whatever you want here.
+			 * count the number of yess for fb and b, and then result 
 			 */
+		//format: p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
+		//			0, 1,   2  3   4   5   6        7       8       9      10    11      12    13     14       15       16       17      18       19        
 			System.out.println(temp[0]);
 		}
 		// Close the input stream
@@ -58,7 +60,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(args[0]);
+		// System.out.println(args[0]);
 		// write your code here
 		// int x_min=0;
 		// int x_max=10;
@@ -66,7 +68,8 @@ public class Main {
 		// int y_max=10;
 		// int grid_n=40;
 		// int grid_density=(x_max-x_min)/grid_n;
-
+		// TODO read in different files. 
+		readFile("");
 		// we first will use grid 4000*4000, density 0.1
 	}
 
