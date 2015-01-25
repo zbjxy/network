@@ -5,9 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Main {
+public class Main_bak {
 
 	private static double[][] FBgrid;
 
@@ -43,14 +42,16 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
 		String strLine;
-		ArrayList<Integer> fbResults = new ArrayList<Integer>();
-		ArrayList<Integer> obResults = new ArrayList<Integer>();
+
 		// Read File Line By Line
 		while ((strLine = br.readLine()) != null) {
 			// Print the content on the console
-			// System.out.println(strLine.split(" "));
+			System.out.println(strLine.split(" "));
 			float[] temp = parseFloatArray(strLine.split(" "));
-
+			ArrayList<Integer> fbResults = new ArrayList<Integer>();
+			ArrayList<Integer> obResults = new ArrayList<Integer>();
+			
+			
 			// TODO add function calls to algorithm.
 			/*
 			 * count the number of yess for fb and b, and then result
@@ -58,76 +59,10 @@ public class Main {
 			// format:
 			// p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
 			// 0, 1, 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-			double x1 = 0;
-			double y1 = (double) (temp[16] / 10);
-			double x2 = eucDis((double) temp[0], (double) temp[1],
-					(double) temp[3], (double) temp[4]) / 10;
-			double y2 = (double) (temp[19] / 10);
-			double t2 = ((double) temp[5] - (double) temp[2]) * 5.0; // (p2t-p1t)*5
-			double xs = x2 / 2;
-			double ts = (double) temp[8] * 5.0;
-			double speed = (double) temp[13] / 50.0; // we use speed*1.1 in the
-														// function
-
-			double grid_density = (eucDis(x1, 0, x2, 0) / 100); // these two
-			// functions convert
-			// distance to grid
-			// density
-			int grid_size = (int) (400 / grid_density);
-			FBgrid = new double[grid_size][grid_size];
-			for (int i = 0; i < grid_size; i++) {
-				for (int j = 0; j < grid_size; j++) {
-					FBgrid[i][j] = 0.0;
-				}
-			}
-			boolean FB_result = lane_crossing_FB(x1, y1, 0, x2, y2, t2, 0, t2,
-					speed * 1.1, xs, ts, 0.1, grid_density, grid_size);
-			if (FB_result == true) {
-				System.out.print("\n FB judge ");
-				System.out.print("YES");
-				fbResults.add(1);
-			} else {
-				System.out.print("\n FB judge ");
-				System.out.print("NO");
-				fbResults.add(0);
-			}
-
-			boolean bead_result = lane_crossing_bead(x1, y1, 0, x2, y2, t2, 0,
-					t2, speed * 1.1, 0.1, grid_density, grid_size);
-			if (bead_result == true) {
-				System.out.print("\n bead judge ");
-				System.out.print("YES");
-				obResults.add(1);
-			} else {
-				System.out.print("\n bead judge ");
-				System.out.print("NO");
-				obResults.add(0);
-			}
-			// System.out.println(temp[0]);
+			System.out.println(temp[0]);
 		}
 		// Close the input stream
 		br.close();
-		int sumFb = 0;
-		int sumOb = 0;
-		for (int i = 0; i < fbResults.size(); i++) {
-			sumFb += fbResults.get(i);
-		}
-		for (int i = 0; i < obResults.size(); i++) {
-			sumOb += obResults.get(i);
-		}
-		System.out.println("sumfb= " + sumFb);
-		System.out.println("sumob= " + sumOb);
-		System.out.println("fbResults = " + arrayToString(fbResults));
-		System.out.println("fbResults = " + arrayToString(obResults));
-
-	}
-
-	public static String arrayToString(List<Integer> inArray) {
-		StringBuilder sb = new StringBuilder();
-		for (int str : inArray) {
-			sb.append(str);
-		}
-		return sb.toString();
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -140,33 +75,31 @@ public class Main {
 		// int grid_n=40;
 		// int grid_density=(x_max-x_min)/grid_n;
 		// TODO read in different files.
-		// readFile("");
 		readFile("");
 		// we first will use grid 4000*4000, density 0.1
 	}
 
-	public static void doTest() throws IOException {
+	public static void doTest(float[] line) throws IOException {
 		/*
 		 * 
 		 *  
 		 * 
 		 */
-		// double area = len_area_total(0, 0, 0, 100, 0, 10, 5, 12, 1, 400); //
-		// theoretical
-		// value:
-		// 900.311122,
-		// estimated
-		// value:
-		// 899.99
-		// double area_above = len_area_aboveroad(0, -2, 0, 100, 4, 10, 5,
-		// 12,0.5, 800);
+		double area = len_area_total(0, 0, 0, 100, 0, 10, 5, 12, 1, 400); // theoretical
+																			// value:
+																			// 900.311122,
+																			// estimated
+																			// value:
+																			// 899.99
+		double area_above = len_area_aboveroad(0, -2, 0, 100, 4, 10, 5, 12,
+				0.5, 800);
 
 		// double area_2=len_area_total(0,0,0,50,0,5,2.5,12,0.2,2000);
 
-		// System.out.print(area);
-		// System.out.print("\n");
-		// System.out.print(area_above);
-		// System.out.print("\n dis=50\n");
+		System.out.print(area);
+		System.out.print("\n");
+		System.out.print(area_above);
+		System.out.print("\n dis=50\n");
 		// System.out.print(area_2);
 
 		/* test lane-cross-bead */
@@ -204,8 +137,8 @@ public class Main {
 		 * System.out.print("\nFB cross total area is: ");
 		 * System.out.print(bead_above);
 		 */
-		boolean FB_result = lane_crossing_FB(0, -8, 0, 100, -4, 10, 0, 10, 11,
-				50, 4.5, 0.1, grid_density, grid_size);
+		boolean FB_result = lane_crossing_FB(0, -5, 0, 100, -0.2, 10, 0, 10,
+				12, 50, 4.5, 0.1, grid_density, grid_size);
 		if (FB_result == true) {
 			System.out.print("\n FB judge ");
 			System.out.print("YES");
@@ -214,8 +147,8 @@ public class Main {
 			System.out.print("NO");
 		}
 
-		boolean bead_result = lane_crossing_bead(0, -8, 0, 100, -4, 10, 0, 10,
-				11, 0.1, grid_density, grid_size);
+		boolean bead_result = lane_crossing_bead(0, -5, 0, 100, -0.2, 10, 0,
+				10, 12, 0.1, grid_density, grid_size);
 		if (bead_result == true) {
 			System.out.print("\n bead judge ");
 			System.out.print("YES");
@@ -307,11 +240,11 @@ public class Main {
 			double x2, double y2, double t2, double tmin, double tmax,
 			double speed, double deltat, double grid_d, int grid_size) {
 
-		//System.out.print("running");
+		System.out.print("running");
 		if (lane_crossing_bead_prob(x1, y1, t1, x2, y2, t2, tmin, speed,
-				grid_d, grid_size) > 0.25
+				grid_d, grid_size) > 0.3
 				|| lane_crossing_bead_prob(x1, y1, t1, x2, y2, t2, tmax, speed,
-						grid_d, grid_size) > 0.25) {
+						grid_d, grid_size) > 0.3) {
 			return true;
 		}
 		if (tmax - tmin < deltat) {
@@ -352,9 +285,9 @@ public class Main {
 				}
 			}
 		}
-		//System.out.print(grid_xs);
-		//System.out.print("upper and lower of y");
-		//System.out.println(grid_ys_max + ".." + grid_ys_min);
+		System.out.print(grid_xs);
+		System.out.print("upper and lower of y");
+		System.out.println(grid_ys_max + ".." + grid_ys_min);
 		// here, our unit movement choose to be the grid density area.
 		if (tq < ts) // left half-FB
 		{
@@ -461,11 +394,10 @@ public class Main {
 	public static double FB_lane_cross_prob(double x1, double y1, double t1,
 			double x2, double y2, double t2, double tq, double speed,
 			double xs, double ts, double grid_d, int grid_size) {
-		double total_area = FB_crossArea(x1, y1, t1, x2, y2, t2, tq, speed, xs,
-				ts, grid_d, grid_size);
-		double cross_area = FB_lane_cross_area(x1, y1, t1, x2, y2, t2, tq,
-				speed, xs, ts, grid_d, grid_size);
-		double prob = cross_area / total_area;
+		double prob = FB_lane_cross_area(x1, y1, t1, x2, y2, t2, tq, speed, xs,
+				ts, grid_d, grid_size)
+				/ FB_crossArea(x1, y1, t1, x2, y2, t2, tq, speed, xs, ts,
+						grid_d, grid_size);
 		for (int i = 0; i < grid_size; i++) {
 			for (int j = 0; j < grid_size; j++) {
 				FBgrid[i][j] = 0.0;
@@ -481,9 +413,9 @@ public class Main {
 
 		System.out.print("running");
 		if (FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmin, speed, xs, ts,
-				grid_d, grid_size) > 0.25
+				grid_d, grid_size) > 0.3
 				|| FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmax, speed, xs,
-						ts, grid_d, grid_size) > 0.25) {
+						ts, grid_d, grid_size) > 0.3) {
 			return true;
 		}
 		if (tmax - tmin < deltat) {
