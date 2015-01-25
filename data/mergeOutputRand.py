@@ -137,6 +137,7 @@ x = 0.0
 y = 0.0
 prevLine=[]
 tempSensor=[]
+differentLines = False
 with open(fname2,'r') as f2:
     for line2 in f2:
         lineNum+=1
@@ -144,11 +145,15 @@ with open(fname2,'r') as f2:
         line1Temp = f1.readline().strip().split()
         line2Temp = line2.strip().split()
         while(not correctLines(lineNum,line1Temp, line2Temp)):
+            differentLines = True
             line1Temp = f1.readline().strip().split()
             if not line1Temp:
                 print 'no mapping for file1 last line. '
                 import sys
                 sys.exit(1)
+        if differentLines:
+            differentLines = False
+            continue
         widthTemp = nextWidthRand(prev,widthRange)
         prev = widthTemp
         lineTemp.append(line1Temp[4])

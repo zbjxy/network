@@ -36,7 +36,8 @@ public class CommandLineMain {
 		if (fileName.equals("")) {
 			fileName = "sensor50_rand.txt";
 		}
-		String path = "/Users/leoliu/workspace/network/data/";
+		String path ="";
+		//"/Users/leoliu/workspace/network/data/";
 		FileInputStream fstream = new FileInputStream(path + fileName);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
@@ -81,24 +82,24 @@ public class CommandLineMain {
 			boolean FB_result = lane_crossing_FB(x1, y1, 0, x2, y2, t2, 0, t2,
 					speed * 1.1, xs, ts, 0.1, grid_density, grid_size);
 			if (FB_result == true) {
-				System.out.print("\n FB judge ");
-				System.out.print("YES");
+				//System.out.print("\n FB judge ");
+				//System.out.print("YES");
 				fbResults.add(1);
 			} else {
-				System.out.print("\n FB judge ");
-				System.out.print("NO");
+				//System.out.print("\n FB judge ");
+				//System.out.print("NO");
 				fbResults.add(0);
 			}
 
 			boolean bead_result = lane_crossing_bead(x1, y1, 0, x2, y2, t2, 0,
 					t2, speed * 1.1, 0.1, grid_density, grid_size);
 			if (bead_result == true) {
-				System.out.print("\n bead judge ");
-				System.out.print("YES");
+				//System.out.print("\n bead judge ");
+				//System.out.print("YES");
 				obResults.add(1);
 			} else {
-				System.out.print("\n bead judge ");
-				System.out.print("NO");
+				//System.out.print("\n bead judge ");
+				//System.out.print("NO");
 				obResults.add(0);
 			}
 			// System.out.println(temp[0]);
@@ -142,7 +143,7 @@ public class CommandLineMain {
 		// int grid_n=40;
 		// int grid_density=(x_max-x_min)/grid_n;
 		// TODO read in different files.
-		// readFile("");
+		 readFile(args[0]);
 		// readFile("");
 		// we first will use grid 4000*4000, density 0.1
 	}
@@ -481,7 +482,7 @@ public class CommandLineMain {
 			double speed, double xs, double ts, double deltat, double grid_d,
 			int grid_size) {
 
-		System.out.print("running");
+		//System.out.print("running");
 		if (FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmin, speed, xs, ts,
 				grid_d, grid_size) > 0.25
 				|| FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmax, speed, xs,
