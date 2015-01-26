@@ -45,11 +45,13 @@ public class CommandLineMain {
 		ArrayList<Integer> fbResults = new ArrayList<Integer>();
 		ArrayList<Integer> obResults = new ArrayList<Integer>();
 		// Read File Line By Line
+        int lineNum = 1;
 		while ((strLine = br.readLine()) != null) {
-			// Print the content on the console
+            System.out.println("reading line "+lineNum);
+            // Print the content on the console
 			// System.out.println(strLine.split(" "));
 			float[] temp = parseFloatArray(strLine.split(" "));
-
+            
 			// TODO add function calls to algorithm.
 			/*
 			 * count the number of yess for fb and b, and then result
@@ -103,7 +105,9 @@ public class CommandLineMain {
 				obResults.add(0);
 			}
 			// System.out.println(temp[0]);
-		}
+		    System.out.println("finished reading line"+lineNum);
+            lineNum++;
+        }
 		// Close the input stream
 		br.close();
 		int sumFb = 0;

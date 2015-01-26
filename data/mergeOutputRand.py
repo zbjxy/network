@@ -101,14 +101,14 @@ def createSensor(x1,y1,t1,x2,y2,t2,speed):
     y2 = float(y2)
     t1 = float(t1)
     t2 = float(t2)
-    speed = float(speed)
+    speed = 1.3*float(speed)
     
     probX = (x2+x1)/2
     probY = (y2+y1)/2
     tmin = t1+dis(x1,y1, probX, probY)/speed
     tmax = t2-dis(probX, probY, x2, y2)/speed
     t = 0
-    mu,sigma = (tmin+tmax)/2,((tmin+tmax)/2-tmin)/3
+    mu,sigma = (tmin+tmax)/2,((tmin+tmax)/2-tmin)/2.5
     t = random.gauss(mu, sigma)
     return [str(x1),str(y1),str(t1),str(x2),str(y2),str(t2),str(probX),str(probY),str(t)]
 #the first file format: 
@@ -121,7 +121,7 @@ fname1 = 'output.txt'
 fname2 = 'output2.txt'
 fname3 = 'finaloutput.txt'
 fname4 = 'sensor.txt'
-widthRange = 50#this means the width range from -5 to 5. 
+widthRange = 40#this means the width range from -5 to 5. 
 f1 = open(fname1,'r')
 #f2 = open(fname2,'r')
 #f3 is going to be the new file holding a width and line segements with format x1 y1 x2 y2 xc yc speed width
@@ -153,7 +153,9 @@ with open(fname2,'r') as f2:
                 sys.exit(1)
         if differentLines:
             differentLines = False
+            prevLine = []
             continue
+        
         widthTemp = nextWidthRand(prev,widthRange)
         prev = widthTemp
         lineTemp.append(line1Temp[4])
@@ -165,6 +167,14 @@ with open(fname2,'r') as f2:
 
         #add a check for the same speed. If it has the same speed, then record the two records in a new file. Otherwise, dont record those. 
         if sameSpeed(prevLine,lineTemp):
+            tempDistance = dis(float(prevLine[5]),float(prevLine[6]),float(lineTemp[5]),float(lineTemp[6]))
+            if tempDistance>1.01*float(lineTemp[7]) or tempDistance<0.99*float(lineTemp[7]):
+                prevLine = []
+                print 'distance mismatch at line Number '+str(lineNum)+"tempDistance: "+str(tempDistance)+" speed: "+lineTemp[7]
+                continue
+            if round(float(lineTemp[7]))!=59:
+                prevLine=[]
+                continue
             tempSensor = createSensor(prevLine[5],prevLine[6],prevLine[0],lineTemp[5],lineTemp[6],lineTemp[0],lineTemp[7])
             tempSensor.extend([prevLine[1],prevLine[2],lineTemp[1],lineTemp[2],lineTemp[7]])
             tempSensor.extend([prevLine[9],prevLine[10],prevLine[8],lineTemp[9],lineTemp[10],lineTemp[8]])
