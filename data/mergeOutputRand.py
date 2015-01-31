@@ -1,5 +1,5 @@
 import random
-
+speedCoefficient = 1.3
 #kill the first line from output.txt
 #merge the 2 files together, taking the first output.txt's speed, and then assign a random width. 
 #provide x1 y1 x2 y2 xc yc and width 
@@ -101,7 +101,7 @@ def createSensor(x1,y1,t1,x2,y2,t2,speed):
     y2 = float(y2)
     t1 = float(t1)
     t2 = float(t2)
-    speed = 1.3*float(speed)
+    speed = speedCoefficient*float(speed)
     
     probX = (x2+x1)/2
     probY = (y2+y1)/2

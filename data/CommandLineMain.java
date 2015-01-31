@@ -4,9 +4,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CommandLineMain {
 
+    static double speedCoefficient=1.6;
+    static double tq_max=0;
+    static double prob_max=0;
+    static double[] beadarea=new double[2];
+    static double[] FBarea=new double[2];
+static double FBoldtime=0;
+static double FBtotaltime=0;
 	private static double[][] FBgrid;
 
 	/**
@@ -44,9 +52,16 @@ public class CommandLineMain {
 		String strLine;
 		ArrayList<Integer> fbResults = new ArrayList<Integer>();
 		ArrayList<Integer> obResults = new ArrayList<Integer>();
+                ArrayList<Integer> truth = new ArrayList<Integer>();
 		// Read File Line By Line
         int lineNum = 1;
-		while ((strLine = br.readLine()) != null) {
+	long timeOldBead=0;
+	long totaltimebead=0;
+        long timeOld=0;
+        long totalTime=0;
+        Random randomGenerator = new Random();
+        int randomInt = 1;
+        while ((strLine = br.readLine()) != null) {
             System.out.println("reading line "+lineNum);
             // Print the content on the console
 			// System.out.println(strLine.split(" "));
@@ -60,58 +75,159 @@ public class CommandLineMain {
 			// p1x,p1y,p1t,p2x,p2y,p2t,xSensor,ySensor,tSensor,edgeX1,edgeY1,edgeX2,edgeY2,speed,p1xWidth,p1yWidth,p1Width,p2xWidth,p2yWidth,p2width
 			// 0, 1, 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
 			double x1 = 0;
-			double y1 = (double) (temp[16] / 10);
+			double y1 =  (temp[16] / 10.0);
 			double x2 = eucDis((double) temp[0], (double) temp[1],
-					(double) temp[3], (double) temp[4]) / 10;
-			double y2 = (double) (temp[19] / 10);
-			double t2 = ((double) temp[5] - (double) temp[2]) * 5.0; // (p2t-p1t)*5
-			double xs = x2 / 2;
-			double ts = (double) temp[8] * 5.0;
-			double speed = (double) temp[13] / 50.0; // we use speed*1.1 in the
+					(double) temp[3], (double) temp[4]) / 10.0;
+			double y2 =  (temp[19] / 10.0);
+			double t2 = ((double) temp[5] - (double) temp[2]); // (p2t-p1t)*5
+			double xs = x2 / 2.0;
+			double ts = ((double) temp[8]-(double) temp[2]);
+			double speed = (double) temp[13] / 10.0; // we use speed*1.1 in the
+			//double speed=eucDis((double) temp[0], (double) temp[1], (double) temp[3], (double) temp[4]) / 50.0;
+                        double speed_app=speed*speedCoefficient;
+			System.out.printf("x1--:%f y1--:%f x2--:%f y2--:%f t2--:%f xs--:%f ts--:%f speed--:%f",x1,y1,x2,y2,t2,xs,ts,speed_app);
 														// function
 
 			double grid_density = (eucDis(x1, 0, x2, 0) / 100); // these two
 			// functions convert
 			// distance to grid
 			// density
-			int grid_size = (int) (400 / grid_density);
+			int grid_size = (int) (15 / grid_density);
 			FBgrid = new double[grid_size][grid_size];
 			for (int i = 0; i < grid_size; i++) {
 				for (int j = 0; j < grid_size; j++) {
 					FBgrid[i][j] = 0.0;
 				}
 			}
+
+/*
+			timeOld = System.currentTimeMillis();
 			boolean FB_result = lane_crossing_FB(x1, y1, 0, x2, y2, t2, 0, t2,
-					speed * 1.1, xs, ts, 0.1, grid_density, grid_size);
+					speed_app, xs, ts, 0.2, grid_density, grid_size);
+			totalTime += System.currentTimeMillis()-timeOld;
 			if (FB_result == true) {
-				//System.out.print("\n FB judge ");
-				//System.out.print("YES");
+				System.out.print("\n FB judge ");
+				System.out.print("1");
 				fbResults.add(1);
 			} else {
-				//System.out.print("\n FB judge ");
-				//System.out.print("NO");
+				System.out.print("\n FB judge ");
+				System.out.print("0");
 				fbResults.add(0);
 			}
 
+            
 			boolean bead_result = lane_crossing_bead(x1, y1, 0, x2, y2, t2, 0,
-					t2, speed * 1.1, 0.1, grid_density, grid_size);
-			if (bead_result == true) {
-				//System.out.print("\n bead judge ");
-				//System.out.print("YES");
+					t2, speed_app, 0.2, grid_density, grid_size);
+            
+            if (bead_result == true) {
+				System.out.print("\n bead judge ");
+				System.out.print("YES");
 				obResults.add(1);
 			} else {
-				//System.out.print("\n bead judge ");
-				//System.out.print("NO");
+				System.out.print("\n bead judge ");
+				System.out.print("NO");
 				obResults.add(0);
 			}
+                        if(y2*y1<0)
+			{
+				truth.add(1);
+			} else {
+                                truth.add(0);
+                        }
+*/
+			timeOldBead=System.currentTimeMillis();
+			double bead_agg=lane_crossing_bead_agg(x1, y1, 0, x2, y2, t2, 0,t2, speed_app, 0.05, grid_density, grid_size);
+			totaltimebead+=System.currentTimeMillis()-timeOldBead;
+			timeOld = System.currentTimeMillis();
+			double FB_agg=lane_crossing_FB_agg(x1, y1, 0, x2, y2, t2, 0, t2,speed_app, xs, ts, 0.05, grid_density, grid_size);
+			totalTime += System.currentTimeMillis()-timeOld;
+/*
+			double FB_total_area = FB_crossArea(x1, y1, 0, x2, y2, t2, tq_max, speed_app, xs,ts, grid_density, grid_size);
+		double FB_cross_area = FB_lane_cross_area(x1, y1, 0, x2, y2, t2, tq_max,speed_app, xs, ts, grid_density, grid_size);
+
+		for (int i = 0; i < grid_size; i++) {
+			for (int j = 0; j < grid_size; j++) {
+				FBgrid[i][j] = 0.0;
+			}
+		}
+
+                         double bead_area= len_area_aboveroad(x1, y1, 0, x2, y2, t2, tq_max, speed_app, grid_density,grid_size);
+		         double bead_total=len_area_total(x1, y1, 0, x2, y2, t2, tq_max, speed_app, grid_density, grid_size);
+		double crossratio=FB_cross_area/bead_area;
+		double totalratio=FB_total_area/bead_total;
+                
 			// System.out.println(temp[0]);
-		    System.out.println("finished reading line"+lineNum);
-            lineNum++;
+		System.out.println("\ncross area FB/Bead="+crossratio);
+		System.out.println("\ntotal area FB/Bead="+totalratio);
+		System.out.println("\nBead total prob is:="+bead_agg);
+		System.out.println("\nFB total prob is:="+FB_agg);
+*/
+		System.out.println("\nfinished reading line"+lineNum);
+        randomInt = randomGenerator.nextInt(100);
+            if(randomInt>75){
+                if(bead_agg==1){
+                    
+                }
+                
+                
+            }
+		if(bead_agg==1&&FB_agg==1)
+		{
+		  System.out.print("\n bead judge ");
+          System.out.print("1");
+          obResults.add(1);
+          System.out.print("\n FB judge ");
+          System.out.print("YES");
+          fbResults.add(1);
+		}
+		else
+		{
+		double bead_prob_f=beadarea[0]/beadarea[1];
+		double FB_prob_f=FBarea[0]/FBarea[1];
+		System.out.println("\nbead aggregated prob is:="+(bead_prob_f));
+		System.out.println("\nFB aggregated prob is:="+(FB_prob_f));
+			if (bead_prob_f > 0.1) {
+				System.out.print("\n bead judge ");
+				System.out.print("1");
+				obResults.add(1);
+			} else {
+				System.out.print("\n bead judge ");
+				System.out.print("0");
+				obResults.add(0);
+			}
+			if (FB_prob_f >0.1) {
+				System.out.print("\n FB judge ");
+				System.out.print("YES");
+				fbResults.add(1);
+			} else {
+				System.out.print("\n FB judge ");
+				System.out.print("NO");
+				fbResults.add(0);
+			}
+
+		}
+
+
+            if(y2*y1<0)
+			{
+				truth.add(1);
+			} else {
+                                truth.add(0);
+                        }
+		beadarea[0]=0;
+		beadarea[1]=0;
+		FBarea[0]=0;
+		FBarea[1]=0;
+		tq_max=0;
+		prob_max=0;
+        lineNum++;
         }
 		// Close the input stream
 		br.close();
 		int sumFb = 0;
 		int sumOb = 0;
+                int FP=0;
+		int FP_notinFB=0;
 		for (int i = 0; i < fbResults.size(); i++) {
 			sumFb += fbResults.get(i);
 		}
@@ -121,9 +237,22 @@ public class CommandLineMain {
 		System.out.println("sumfb= " + sumFb);
 		System.out.println("sumob= " + sumOb);
 		System.out.println("fbResults = " + arrayToString(fbResults));
-		System.out.println("fbResults = " + arrayToString(obResults));
-
-	}
+		System.out.println("obResults = " + arrayToString(obResults));
+                for (int i = 0; i < fbResults.size(); i++) {
+			if(truth.get(i)==0 && obResults.get(i)==1)
+			{
+			    FP++;
+			}
+                        if(truth.get(i)==0 && obResults.get(i)==1 && fbResults.get(i)==0)
+			{
+			    FP_notinFB++;
+                        }
+		}
+                System.out.println("false positive= " + FP);
+		System.out.println("false positive corrected= " + FP_notinFB);
+	    System.out.println("bead total time: "+totaltimebead);
+	    System.out.println("FB total time: "+totalTime);
+    }
 
 	public static String arrayToString(List<Integer> inArray) {
 		StringBuilder sb = new StringBuilder();
@@ -134,11 +263,13 @@ public class CommandLineMain {
 	}
 
 	public static void main(String[] args) throws IOException {
-		if (args.length < 1) {
+		if (args.length < 2) {
 			System.out.println("please supply a file name!");
 			return;
 		}
 		System.out.println("reading: "+args[0]);
+        speedCoefficient = Double.parseDouble(args[1]);
+        System.out.println("speed coefficient: "+speedCoefficient);
 		// write your code here
 		// int x_min=0;
 		// int x_max=10;
@@ -149,6 +280,7 @@ public class CommandLineMain {
 		// TODO read in different files.
 		 readFile(args[0]);
 		// readFile("");
+		//doTest();
 		// we first will use grid 4000*4000, density 0.1
 	}
 
@@ -188,11 +320,11 @@ public class CommandLineMain {
 		/***********/
 		/* start to calculate FB */
 
-		double grid_density = (eucDis(0, 0, 100, 0) / 100); // these two
+		double grid_density = (eucDis(0, 0, 10, 0) / 100); // these two
 															// functions convert
 															// distance to grid
 															// density
-		int grid_size = (int) (400 / grid_density);
+		int grid_size = (int) (100 / grid_density);
 		FBgrid = new double[grid_size][grid_size];
 		for (int i = 0; i < grid_size; i++) {
 			for (int j = 0; j < grid_size; j++) {
@@ -211,8 +343,11 @@ public class CommandLineMain {
 		 * System.out.print("\nFB cross total area is: ");
 		 * System.out.print(bead_above);
 		 */
-		boolean FB_result = lane_crossing_FB(0, -8, 0, 100, -4, 10, 0, 10, 11,
-				50, 4.5, 0.1, grid_density, grid_size);
+//double FBarea = FB_crossArea(0, -8, 0, 100, -4, 10, 5, 11, 50, 4.5,grid_density, grid_size); 
+//System.out.print("\nFB total area is: ");
+		//System.out.print(FBarea);
+		boolean FB_result = lane_crossing_FB(0, -2, 0, 10, -3, 1, 0, 1, 15,
+				5, 0.4, 0.05, grid_density, grid_size);
 		if (FB_result == true) {
 			System.out.print("\n FB judge ");
 			System.out.print("YES");
@@ -221,8 +356,8 @@ public class CommandLineMain {
 			System.out.print("NO");
 		}
 
-		boolean bead_result = lane_crossing_bead(0, -8, 0, 100, -4, 10, 0, 10,
-				11, 0.1, grid_density, grid_size);
+		boolean bead_result = lane_crossing_bead(0, -2, 0, 10, -3, 1, 0, 1,
+				15, 0.05, grid_density, grid_size);
 		if (bead_result == true) {
 			System.out.print("\n bead judge ");
 			System.out.print("YES");
@@ -300,10 +435,25 @@ public class CommandLineMain {
 	public static double lane_crossing_bead_prob(double x1, double y1,
 			double t1, double x2, double y2, double t2, double tq,
 			double speed, double grid_d, int grid_size) {
-		return len_area_aboveroad(x1, y1, t1, x2, y2, t2, tq, speed, grid_d,
-				grid_size)
-				/ len_area_total(x1, y1, t1, x2, y2, t2, tq, speed, grid_d,
+		double crossarea= len_area_aboveroad(x1, y1, t1, x2, y2, t2, tq, speed, grid_d,
+				grid_size);
+		double totalarea=len_area_total(x1, y1, t1, x2, y2, t2, tq, speed, grid_d,
 						grid_size);
+		
+		beadarea[0]+=crossarea;
+		beadarea[1]+=totalarea;
+		double prob;
+		if(totalarea==0)
+		{
+		  prob=0;
+		}
+		else
+		{
+		  prob=crossarea/totalarea;
+		}
+		
+		System.out.printf("\nbead prob is: %f |", prob);
+		return prob;
 	}
 
 	public static double eucDis(double x1, double y1, double x2, double y2) {
@@ -316,9 +466,9 @@ public class CommandLineMain {
 
 		// System.out.print("running");
 		if (lane_crossing_bead_prob(x1, y1, t1, x2, y2, t2, tmin, speed,
-				grid_d, grid_size) > 0.25
+				grid_d, grid_size) >1
 				|| lane_crossing_bead_prob(x1, y1, t1, x2, y2, t2, tmax, speed,
-						grid_d, grid_size) > 0.25) {
+						grid_d, grid_size) >1) {
 			return true;
 		}
 		if (tmax - tmin < deltat) {
@@ -333,6 +483,23 @@ public class CommandLineMain {
 		}
 
 	}
+	public static double lane_crossing_bead_agg(double x1, double y1, double t1,
+			double x2, double y2, double t2, double tmin, double tmax,
+			double speed, double deltat, double grid_d, int grid_size){
+		double total_prob=0;
+		for(double i=t1;i<=t2;i=i+deltat)
+		{
+		  double Curprob=lane_crossing_bead_prob(x1, y1, t1, x2, y2, t2, i, speed,
+				grid_d, grid_size);
+		  if(Curprob==1)
+		  {
+		    return 1;
+		  }
+		  total_prob=total_prob+Curprob;
+		}
+		return total_prob;
+
+	}
 
 	// ///////////////////////////////////////////////////function for lane
 	// crossing-FB////////////////////
@@ -340,8 +507,10 @@ public class CommandLineMain {
 			double x2, double y2, double t2, double tq, double speed,
 			double xs, double ts, double grid_d, int grid_size) {
 		int grid_xs = (int) (xs / grid_d) + ((int) (0.25 * grid_size));
+
 		int grid_ys_max = Integer.MIN_VALUE;
 		int grid_ys_min = Integer.MAX_VALUE;
+		
 		for (int row = 0; row < grid_size; row++) {
 			double yaxis = (row - ((int) (0.50 * grid_size))) * grid_d;
 			// radius for sensor time
@@ -359,18 +528,27 @@ public class CommandLineMain {
 				}
 			}
 		}
-		// System.out.print(grid_xs);
-		// System.out.print("upper and lower of y");
+		
+      /*
+		double radius1_sy = speed * (ts - t1);
+		double radius2_sy = speed * (t2 - ts);
+		int ys=Math.min((int)Math.sqrt(Math.pow(radius1_sy,2)-Math.pow((xs-x1),2)),(int)Math.sqrt(Math.pow(radius2_sy,2)-Math.pow((x2-xs),2)));
+		grid_ys_max=(int) (ys / grid_d) + ((int) (0.5 * grid_size));
+		grid_ys_min=(int) ((-1)*ys / grid_d) + ((int) (0.5 * grid_size));
+		//System.out.print(grid_xs);
+      */
+		//System.out.print("\nupper - lower of y: ");
+		//System.out.print(grid_ys_max-grid_ys_min);
 		// System.out.println(grid_ys_max + ".." + grid_ys_min);
 		// here, our unit movement choose to be the grid density area.
 		if (tq < ts) // left half-FB
 		{
-			for (int y_move = grid_ys_min; y_move < grid_ys_max; y_move++) // y_move
+			for (int y_move = grid_ys_min; y_move < grid_ys_max; y_move=y_move+1) // y_move
 																			// is
 																			// grid
 			{
 				for (int rowindex = 0; rowindex < grid_size; rowindex++) {
-					for (int colindex = 0; colindex < grid_size; colindex++) {
+					for (int colindex = 0; colindex <= grid_xs; colindex++) {
 						double xaxis = (colindex - ((int) (0.25 * grid_size)))
 								* grid_d;
 						double yaxis = (rowindex - ((int) (0.50 * grid_size)))
@@ -395,12 +573,12 @@ public class CommandLineMain {
 
 		} else // right half-FB
 		{
-			for (int y_move = grid_ys_min; y_move < grid_ys_max; y_move++) // y_move
+			for (int y_move = grid_ys_min; y_move < grid_ys_max; y_move=y_move+1) // y_move
 																			// is
 																			// grid
 			{
 				for (int rowindex = 0; rowindex < grid_size; rowindex++) {
-					for (int colindex = 0; colindex < grid_size; colindex++) {
+					for (int colindex = grid_xs; colindex < grid_size; colindex++) {
 						double xaxis = (colindex - ((int) (0.25 * grid_size)))
 								* grid_d;
 						double yaxis = (rowindex - ((int) (0.50 * grid_size)))
@@ -450,8 +628,11 @@ public class CommandLineMain {
 			double xs, double ts, double grid_d, int grid_size) {
 		double count = 0;
 		double unit_area = grid_d * grid_d;
+		int grid_xs = (int) (xs / grid_d) + ((int) (0.25 * grid_size));
+		if(tq<ts)
+		{
 		for (int rowindex = 0; rowindex < grid_size; rowindex++) {
-			for (int colindex = 0; colindex < grid_size; colindex++) {
+			for (int colindex = 0; colindex <= grid_xs; colindex++) {
 				double xaxis = (colindex - ((int) (0.25 * grid_size))) * grid_d;
 				double yaxis = (rowindex - ((int) (0.50 * grid_size))) * grid_d;
 
@@ -461,6 +642,21 @@ public class CommandLineMain {
 
 			}
 		}
+		}
+		else
+		{
+		for (int rowindex = 0; rowindex < grid_size; rowindex++) {
+			for (int colindex = grid_xs; colindex < grid_size; colindex++) {
+				double xaxis = (colindex - ((int) (0.25 * grid_size))) * grid_d;
+				double yaxis = (rowindex - ((int) (0.50 * grid_size))) * grid_d;
+
+				if (FBgrid[rowindex][colindex] == 1 && yaxis * y1 < 0) {
+					count++;
+				}
+
+			}
+		}
+		}
 		double area = count * unit_area;
 		return area;
 	}
@@ -468,11 +664,31 @@ public class CommandLineMain {
 	public static double FB_lane_cross_prob(double x1, double y1, double t1,
 			double x2, double y2, double t2, double tq, double speed,
 			double xs, double ts, double grid_d, int grid_size) {
+		//FBoldtime=System.currentTimeMillis();
 		double total_area = FB_crossArea(x1, y1, t1, x2, y2, t2, tq, speed, xs,
 				ts, grid_d, grid_size);
 		double cross_area = FB_lane_cross_area(x1, y1, t1, x2, y2, t2, tq,
 				speed, xs, ts, grid_d, grid_size);
-		double prob = cross_area / total_area;
+		double prob;
+		FBarea[0]+=cross_area;
+		FBarea[1]+=total_area;
+		//FBtotaltime+= System.currentTimeMillis()-FBoldtime;
+
+		if(total_area==0)
+		{
+		  prob=0;
+		}
+		else
+		{
+		  prob=cross_area/total_area;
+		}
+		System.out.printf("\nFB prob is: %f |", prob);
+
+                if(prob>prob_max)
+		{
+		  prob_max=prob;
+		  tq_max=tq;
+		}
 		for (int i = 0; i < grid_size; i++) {
 			for (int j = 0; j < grid_size; j++) {
 				FBgrid[i][j] = 0.0;
@@ -488,9 +704,9 @@ public class CommandLineMain {
 
 		//System.out.print("running");
 		if (FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmin, speed, xs, ts,
-				grid_d, grid_size) > 0.25
+				grid_d, grid_size) >1
 				|| FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, tmax, speed, xs,
-						ts, grid_d, grid_size) > 0.25) {
+						ts, grid_d, grid_size) >1) {
 			return true;
 		}
 		if (tmax - tmin < deltat) {
@@ -503,6 +719,25 @@ public class CommandLineMain {
 							grid_d, grid_size);
 
 		}
+
+	}
+
+	public static double lane_crossing_FB_agg(double x1, double y1, double t1,
+			double x2, double y2, double t2, double tmin, double tmax,
+			double speed, double xs, double ts, double deltat, double grid_d,
+			int grid_size) {
+		double total_prob=0;
+		for(double i=t1;i<=t2;i=i+deltat)
+		{
+		  double Curprob=FB_lane_cross_prob(x1, y1, t1, x2, y2, t2, i, speed, xs, ts,
+				grid_d, grid_size);
+		  if(Curprob==1)
+		  {
+		    return 1;
+		  }
+		  total_prob=total_prob+Curprob;
+		}
+		return total_prob;
 
 	}
 	// we need a tranformation function to transfer
